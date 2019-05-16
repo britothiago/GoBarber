@@ -9,23 +9,28 @@ class SessionController {
     const { email, password } = req.body
     const user = await User.findOne({ where: { email } })
     if (!user) {
-      return res.render('auth/nouser', {
-        msg: 'Opa, este usuário digitado não existe em nosso banco'
-      })
+      req.flash('error', 'Usuário não encontrado')
+      return res.redirect('/')
     }
 
     if (!(await user.checkPassword(password))) {
-      return res.render('auth/nouser', {
-        msg:
-          'Opa, a senha que você digitou parece estar incorreta. Try again, please'
-      })
+      req.flash('error', 'Senha incorreta')
+      return res.redirect('/')
     }
-    req.session.user = user
-    return res.redirect('/app/dashboard')
-  }
 
-  async login (req, res) {
-    return res.render('dashboard')
+    const provider = await User.findOne({
+      where: {
+        email,
+        provider: true
+      }
+    })
+    if (provider) {
+      req.session.user = user
+      return res.redirect('/app/dashboard/provider')
+    } else {
+      req.session.user = user
+      return res.redirect('/app/dashboard')
+    }
   }
 
   destroy (req, res) {

@@ -163,6 +163,20 @@ body {
   color: #fff;
 }
 
+.main-wrapper .content a.goback {
+  background: #45a361;
+  text-decoration: none;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 14px;
+  border: 0;
+  color: #fff;
+}
+
 .main-wrapper .content a.logout:hover {
   background: #c15858;
 }

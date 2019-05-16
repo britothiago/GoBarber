@@ -6,6 +6,18 @@ const upload = require('multer')(multerConfig)
 const SessionController = require('./app/controllers/SessionController')
 const authMidlleware = require('./app/middlewares/auth')
 const guestMiddleware = require('./app/middlewares/guest')
+const DashboardController = require('./app/controllers/DashboardController')
+const FileController = require('./app/controllers/FileController')
+const AppointmentController = require('./app/controllers/AppointmentController')
+const AvailableController = require('./app/controllers/AvailableController')
+
+routes.use((req, res, next) => {
+  res.locals.flashSuccess = req.flash('success')
+  res.locals.flashError = req.flash('error')
+  next()
+})
+
+routes.get('/files/:file', FileController.show)
 
 routes.use('/app', authMidlleware)
 
@@ -17,6 +29,12 @@ routes.post('/signup', upload.single('avatar'), UserController.store)
 
 routes.get('/app/logout', SessionController.destroy)
 
-routes.get('/app/dashboard', SessionController.login)
+routes.get('/app/dashboard', DashboardController.index)
+routes.get('/app/dashboard/provider', DashboardController.provider)
+
+routes.get('/app/appointments/new/:provider', AppointmentController.create)
+routes.post('/app/appointments/new/:provider', AppointmentController.store)
+
+routes.get('/app/available/:provider', AvailableController.index)
 
 module.exports = routes

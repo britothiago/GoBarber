@@ -1,0 +1,29 @@
+{% extends '_layouts/default.njk' %} {% block body %}
+<div class="content">
+  <strong>Olá {{ user.name }}</strong>
+  <p>
+    Consulte sua agenda do dia. Para cancelar o agendamento, clique no botão
+    vermelho:
+  </p>
+
+  <ul class="providers">
+    {% for customer in allCustomers %}
+    <li class="provider">
+      <div>
+        <img src="/files/{{ customer.avatar }}" />
+        <strong>{{ customer.name }}</strong
+        ><br />
+        <strong
+          >{{ customer.day }}/{{ customer.month }} - {{ customer.hour }}</strong
+        >
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <div>
+    <a href="/app/logout" class="logout">Sair</a>
+  </div>
+</div>
+
+{% endblock %}
